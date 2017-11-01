@@ -21,7 +21,10 @@ node send
 ```
 
 ### Config Options
-The structure of the config file is as follows:
+
+#### File Structure
+
+The structure of the `config.json` file is as follows:
 ```
 {
     "email": "example@email.com",
@@ -43,6 +46,9 @@ The structure of the config file is as follows:
 ```
 
 #### Options
+
+Below are the options for the `config.json` file. The only required option is `email`, which must be a valid email address. Everything else is optional. If a subreddit is specified, the `name` attribute is required, and all other attributes are optional.
+
 | Key | Default Value | Description |
 | --- | --- | --- |
 | `email` | **Required** | the email you would like the articles to be sent to, this option must be specified as a valid email
