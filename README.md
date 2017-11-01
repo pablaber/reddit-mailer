@@ -41,8 +41,14 @@ The structure of the config file is as follows:
     ]
 }
 ```
-- `email` - the email you would like the articles to be sent to
-- `blockedDomains` - a list of domain names you would like to be ignored for your email
-- `subreddits` - a list of subreddits that you would like to be scraped and sent
-    - `name` - the name of the subreddit
-    - `limit` - the number of posts you would like to be viewed
+
+#### Options
+| Key | Default Value | Description |
+| --- | --- | --- |
+| `email` | **Required** | the email you would like the articles to be sent to, this option must be specified as a valid email
+| `blockedDomains`| `[]` | a list of domain names you would like to be ignored during the scrape |
+| `subreddits` | `[{name: "all"}]` | a list of subreddits that you would like to include in the scrape |
+| `subreddits[n].name` | **Required** | the name of the subreddit, required if specifying custom subreddits |
+| `subreddits[n].limit` | `10` | the number of posts in the subreddit to be scraped |
+| `subreddits[n].video` | `true` | whether or not to include video links |
+| `subreddits[n].selfPosts` | `true` | whether or not to include self post links |
