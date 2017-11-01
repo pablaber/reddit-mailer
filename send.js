@@ -7,7 +7,7 @@ run();
 function run() {
     var configJson = loadConfig();
     createPostObjects(configJson).then(function(postObjectArray) {
-        console.log(response);
+        console.log(postObjectArray);
     });
 }
 
@@ -80,9 +80,12 @@ function loadConfig() {
 
 function createPostObjects(configJson) {
     return new Promise(function(resolve, reject) {
-        var subredditPosts = new Array(configJson.subreddits.length).fill([]);
+        var subredditPosts = new Array(configJson.subreddits.length).fill(null);
+        subredditPosts = subredditPosts.map(function() { 
+            return [];
+        });
         var finished = 0;
-        for (var i in configJson.subreddits) {
+        for (let i in configJson.subreddits) {
             var subreddit = configJson.subreddits[i];
             var url = apiUrl(subreddit.name, subreddit.limit);
             request(url, function (error, response) {
@@ -91,7 +94,7 @@ function createPostObjects(configJson) {
                 }
                 var json = JSON.parse(response.body);
                 var posts = json.data.children;
-                for (var post of posts) {
+                for (let post of posts) {
                     var postObj = {
                         title: post.data.title,
                         url: post.data.url,
@@ -128,7 +131,3 @@ function apiUrl(subreddit, limit) {
     url += limit;
     return url;
 }
-
-// request("https://www.reddit.com/r/webdev/top/.json?limit=2", function(error, response) {
-//     console.log(response.body);
-// });
