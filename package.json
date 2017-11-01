@@ -1,0 +1,14 @@
+{
+  "name": "work-reddit",
+  "version": "1.0.0",
+  "description": "Send top reddit articles to your work email. ",
+  "main": "send.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrick Bacon-Blaber",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
