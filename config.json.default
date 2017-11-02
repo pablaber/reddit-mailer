@@ -1,17 +1,17 @@
 {
-    email: "example@email.com",
-    blockedDomains: [
+    "email": "example@email.com",
+    "blockedDomains": [
         "youtube.com",
         "imgur.com"
     ],
-    subreddits: [
+    "subreddits": [
         {
-            name: "webdev",
-            limit: 10
+            "name": "webdev",
+            "limit": 10
         },
         {
-            name: "technology",
-            limit: 15
+            "name": "technology",
+            "limit": 15
         }
     ]
 }
