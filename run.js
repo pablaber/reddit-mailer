@@ -2,6 +2,9 @@ var request = require('request');
 var fs = require('fs');
 var moment = require('moment');
 var cheerio = require('cheerio');
+var nodemailer = require('nodemailer');
+
+require('dotenv').config();
 
 run();
 
@@ -9,7 +12,7 @@ function run() {
     var configJson = loadConfig();
     createPostObjects(configJson).then(function(postObjectArray) {
         var html = generateHTML(postObjectArray, configJson);
-        console.log(html);
+        emailHTML(html, configJson);
     });
 }
 
@@ -141,6 +144,38 @@ function generateHTML(postArray, configJson) {
         
     }
     return $.html();
+}
+
+function emailHTML(html, configJson) {
+    var email = process.env.EMAIL;
+    var password = process.env.PASSWORD;
+
+    var transporter = nodemailer.createTransport({
+        service: process.env.SERVICE,
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        }
+    });
+
+    var mailOptions = {
+        from: process.env.EMAIL,
+        to: configJson.email,
+        subject: 'Reddit Mailer Scrape',
+        html: html
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            console.log('-----------------------------');
+            console.log('From: ' + mailOptions.from);
+            console.log('To: ' + mailOptions.to);
+            console.log('Subject: ' + mailOptions.subject);
+        }
+    });
 }
 
 // from https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
