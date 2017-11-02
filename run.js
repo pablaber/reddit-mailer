@@ -3,8 +3,9 @@ var fs = require('fs');
 var moment = require('moment');
 var cheerio = require('cheerio');
 var nodemailer = require('nodemailer');
+var path = require('path');
 
-require('dotenv').config();
+require('dotenv').config({path: path.join(__dirname, ".env")});
 
 run();
 
@@ -17,7 +18,7 @@ function run() {
 }
 
 function loadConfig() {
-    var contents = fs.readFileSync("config.json");
+    var contents = fs.readFileSync(path.join(__dirname, "config.json"));
     var user = JSON.parse(contents);
     var configObj = {};
     // email
