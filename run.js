@@ -1,13 +1,15 @@
 var request = require('request');
 var fs = require('fs');
 var moment = require('moment');
+var cheerio = require('cheerio');
 
 run();
 
 function run() {
     var configJson = loadConfig();
     createPostObjects(configJson).then(function(postObjectArray) {
-        console.log(postObjectArray);
+        var html = generateHTML(postObjectArray, configJson);
+        console.log(html);
     });
 }
 
@@ -116,6 +118,29 @@ function createPostObjects(configJson) {
             });
         }
     });
+}
+
+function generateHTML(postArray, configJson) {
+    $ = cheerio.load('<div class="post-container"></div>');
+    for(var i in postArray) {
+        var posts = postArray[i];
+        var subreddit = configJson.subreddits[i].name;
+        var subredditContainer = $('.post-container').append('<div class="' + subreddit + '-contianer"></div>');
+        var childContainer = subredditContainer.children().eq(i);
+        for(var j in posts) {
+            var post = posts[j];
+            childContainer.append('<div class="post"></div>');
+            var postContainer = childContainer.children().eq(j);
+            postContainer.append('<a href="' + post.url + '" class="post-title">' + (parseInt(j)+1) + '. ' + post.title + '</a>');
+            postContainer.append('<p class="post-info">Posted to /r/' + post.subreddit + ' by ' + post.author + '</p>');
+            postContainer.append('<p class="post-score">Score: ' + post.score + '</p>');
+            if(post.is_self) {
+                postContainer.append('<p class="post-text">' + post.selftext + '</p>');
+            }
+        }
+        
+    }
+    return $.html();
 }
 
 // from https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
