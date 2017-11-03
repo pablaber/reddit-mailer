@@ -5,6 +5,8 @@ var cheerio = require('cheerio');
 var nodemailer = require('nodemailer');
 var path = require('path');
 
+var Tag = require('./modules/htmlBuilder');
+
 require('dotenv').config({path: path.join(__dirname, ".env")});
 
 run();
