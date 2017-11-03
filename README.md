@@ -2,7 +2,7 @@
 
 A node.js app that scrapes reddit for the top articles, and emails you the results.
 
-### Usage
+## Usage
 Fork the project and download locally. 
 
 Install dependencies.
@@ -20,9 +20,9 @@ View config options section to see more about what each option does. Once your `
 node send
 ```
 
-### Config Options
+## Config Options
 
-#### File Structure
+### File Structure
 
 The structure of the `config.json` file is as follows:
 ```
@@ -45,7 +45,7 @@ The structure of the `config.json` file is as follows:
 }
 ```
 
-#### Options
+### Options
 
 Below are the options for the `config.json` file. The only required option is `email`, which must be a valid email address. Everything else is optional. If a subreddit is specified, the `name` attribute is required, and all other attributes are optional.
 
@@ -58,3 +58,7 @@ Below are the options for the `config.json` file. The only required option is `e
 | `subreddits[n].limit` | `10` | the number of posts in the subreddit to be scraped |
 | `subreddits[n].video` | `true` | whether or not to include video links |
 | `subreddits[n].selfPosts` | `true` | whether or not to include self post links |
+
+## Crontab
+
+This app is probably most useful when paired with crontab. For instructions on how to use crontab go [here](https://code.tutsplus.com/tutorials/scheduling-tasks-with-cron-jobs--net-8800). For help with the timing syntax of crontab go [here](https://crontab.guru).
