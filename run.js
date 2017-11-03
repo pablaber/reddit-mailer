@@ -127,26 +127,81 @@ function createPostObjects(configJson) {
 }
 
 function generateHTML(postArray, configJson) {
-    $ = cheerio.load('<div class="post-container"></div>');
+    var container = new Tag("div").style({
+        margin: "20px"
+    });
     for(var i in postArray) {
-        var posts = postArray[i];
-        var subreddit = configJson.subreddits[i].name;
-        var subredditContainer = $('.post-container').append('<div class="' + subreddit + '-contianer"></div>');
-        var childContainer = subredditContainer.children().eq(i);
-        for(var j in posts) {
-            var post = posts[j];
-            childContainer.append('<div class="post"></div>');
-            var postContainer = childContainer.children().eq(j);
-            postContainer.append('<a href="' + post.url + '" class="post-title">' + (parseInt(j)+1) + '. ' + post.title + '</a>');
-            postContainer.append('<p class="post-info">Posted to /r/' + post.subreddit + ' by ' + post.author + '</p>');
-            postContainer.append('<p class="post-score">Score: ' + post.score + '</p>');
-            if(post.is_self) {
-                postContainer.append('<p class="post-text">' + post.selftext + '</p>');
+        var subreddit = postArray[i];
+        var subredditContainer = new Tag("div");
+        var subredditName = configJson.subreddits[i].name;
+        var h2SubredditName = new Tag("h2", "Top posts from /r/" + subredditName).style({
+            "font-size": "24px",
+            "font-weight": "900"
+        });
+        subredditContainer.addChild(h2SubredditName);
+
+        var postList = new Tag("ol").style({
+            "list-style-type": "decimal",
+            "font-size": "20px",
+            "border-top": "2px solid black"
+        });
+        var postNumber = 0;
+        for(var j in subreddit) {
+            var post = subreddit[j];
+            var liPost = new Tag("li");
+            if(postNumber++ !== 0) {
+                liPost.style({
+                    "border-top": "1px solid darkgrey"
+                });
             }
+            var divPost = new Tag("div");
+            liPost.addChild(divPost);
+
+            var titleDomain = new Tag("div");
+            var title = new Tag("a", post.title).attr({
+                href: post.url
+            });
+            var domain = new Tag("span", "(" + post.domain + ")").style({
+                "color": "grey",
+                "font-size": "16px",
+                "margin-left": "5px"
+            });
+            titleDomain.addChild(title).addChild(domain);
+            divPost.addChild(titleDomain);
+
+            var username = new Tag("span", post.author).style({
+                color: "dodgerblue"
+            });
+            var postInfo = new Tag("div", "Posted by " + username.html()).style({
+                "font-size": "16px"
+            });          
+            divPost.addChild(postInfo);
+
+            var score = new Tag("div", "Score: " + post.score).style({
+                "font-size": "16px"
+            });
+            divPost.addChild(score);
+
+            if(post.is_self) {
+                var selfText = new Tag("div", post.selftext).style({
+                    "font-size": "16px",
+                    "border": "1px solid lightgrey",
+                    "border-radius": "1px",
+                    "background-color": "ghostwhite",
+                    "margin-bottom": "5px"
+                });
+                divPost.addChild(selfText);
+            }
+
+            postList.addChild(liPost);
         }
-        
+
+        subredditContainer.addChild(postList);
+
+        container.addChild(subredditContainer);
     }
-    return $.html();
+
+    return container.html();
 }
 
 function emailHTML(html, configJson) {

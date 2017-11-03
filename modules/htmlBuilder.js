@@ -18,6 +18,7 @@ module.exports = function(name, innerHTML) {
         },
         addChild: function(childTag) {
             this.children.push(childTag);
+            return this;
         }
     };
 };
